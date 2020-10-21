@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+# ~/.macos — https://mths.be/macos
+# Modified by Kent C. Dodds
+# Further modified by Tamas Balint :-)
+
+# Close any open System Preferences panes, to prevent them from overriding
+# settings we’re about to change
+osascript -e 'tell application "System Preferences" to quit'
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+###############################################################################
+# Tamas's Customizations                                                       #
+###############################################################################
+
+echo "Hello $(whoami)! Let's get you set up."
+
+# echo xcode-select --install
+# xcode-select --install
+
+echo "mkdir -p ${HOME}/code"
+mkdir -p "${HOME}/code"
+
+echo "installing homebrew"
+# install homebrew https://brew.sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+echo "brew installing packages ( git, hub, nvm, yarn fzf )"
+# hub: a github-specific version of git
+# nvm: node version manager
+# yarn: package manager
+# fzf: command-line fuzzy finder - https://github.com/junegunn/fzf
+brew install git hub nvm yarn fzf
+
+echo "node --version: $(node --version)"
+echo "npm --version: $(npm --version)"
+
+# echo "installing a few global npm packages"
+# npm install --global serve
+
+echo "installing apps with brew cask"
+brew cask install google-chrome firefox firefox-developer-edition \
+visual-studio-code rectangle slack iterm2
+# zoomus
+
+# echo "Generating an RSA token for GitHub"
+# mkdir -p ~/.ssh
+# touch ~/.ssh/config
+# ssh-keygen -t rsa -b 4096 -C "me+github@balinttamas87.com"
+# echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
+# eval "$(ssh-agent -s)"
+# echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
+
+echo "cloning dotfiles"
+git clone git@github.com:balinttamas87/dotfiles.git "${HOME}/dotfiles"
+ln -s "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
+ln -s "${HOME}/dotfiles/.gitignore_global" "${HOME}/.gitignore_global"
+ln -s "${HOME}/dotfiles/.gitconfig" "${HOME}/.gitconfig"
+
+echo "making system modifications:"
+
+###############################################################################
+# General UI/UX                                                               #
+###############################################################################
+
+# Disable the sound effects on boot
+sudo nvram SystemAudioVolume=" "
+
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -bool true
+
+# Finder: show hidden files by default
+# defaults write com.apple.finder AppleShowAllFiles -bool true
+
+# Never go into computer sleep mode
+# sudo systemsetup -setcomputersleep Off > /dev/null
+
+# Save screenshots to the desktop
+# defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+
+# Finder: show status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# Finder: show path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+
+
+
+
+echo "To customise iTerm2 and VS Code terminal follow the instructions here https://gist.github.com/kevin-smets/8568070"
+echo "You will likely just need to install the font and load settings from 'iTerm2-related' folder"

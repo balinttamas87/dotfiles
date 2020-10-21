@@ -1,0 +1,50 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Tamas Balint
+	email = balint.tamas87@gmail.com
+# Please adapt and uncomment the following lines:
+#	name = Tamas Balint
+#	email = t.balint@drum-cussac.com
+[alias]
+	c = commit -m
+	b = branch
+	s = status
+	ch = checkout
+	chm = checkout master
+	pom = pull origin master
+	pum = pull upstream master
+
+	# Delete local branch
+	dlb = branch -d
+
+	# Force delete local branch
+	dlbf = branch -D
+
+	# Delete remote branch
+	drb = push --delete origin
+
+	# Delete all local branches except master NEEDS FIXING
+	dalb = branch | grep -v "master" | xargs git branch -D 
+
+	# View abbreviated SHA, description, and history graph of the latest 20 commits
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+	# Amend the currently staged files to the latest commit
+    amend = commit --amend --reuse-message=HEAD
+
+	lo = log --oneline
+
+	puo = push -u origin
+
+	a = add --all
+
+	ds = diff --staged
+    
+	d = diff
+# [user]
+# 	name = Tamas Balint
+# 	email = t.balint@drum-cussac.com
+[core]
+	autocrlf = false
+	excludesfile = /Users/tamas.balint/.gitignore-global.txt
+
