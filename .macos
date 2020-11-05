@@ -59,7 +59,7 @@ echo "npm --version: $(npm --version)"
 # npm install --global serve
 
 echo "installing apps with brew cask"
-brew cask install google-chrome firefox firefox-developer-edition \
+brew cask install google-chrome firefox \
 visual-studio-code rectangle slack iterm2
 # zoomus
 
